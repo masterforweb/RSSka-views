@@ -1,0 +1,21 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8"?>'?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:n="http://www.google.com/schemas/sitemap-news/0.9">
+  <?if (isset($items)):?>
+  		<?foreach ($items as $item):?>
+			<url>
+				<loc><?=$item['link']?></loc>
+				<n:news>
+					<n:publication>
+						<n:name><?=$main['title']?></n:name>
+						<n:language><?=$main['language']?></n:language>
+					</n:publication>
+					<n:publication_date><?=_helper_date_W3C($item['pubDate'], False)?></n:publication_date>
+					<n:title><?=$filter->source($item['title'])->html2text()->entity('xml')?></n:title>
+				</n:news>
+			</url>
+		<?endforeach?>
+	<?endif?>
+</urlset>

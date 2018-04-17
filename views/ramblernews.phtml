@@ -1,0 +1,37 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?>
+<rss xmlns:rambler="http://news.rambler.ru" version="2.0">
+ <channel>
+	<?if (isset($main)):?>
+    <title><?=$main['title']?></title> 
+    <link><?=$main['link']?></link>
+	  <?if (isset($main['description'])):?>
+          <description><?=$main['description']?></description>
+    <?endif?> 
+  <?endif?>  
+  <?if (isset($items)):?>
+      <?foreach ($items as $item):?>
+	       <item>
+            <?if (isset($item['id']) and $item['id'] !== ''):?>
+              <guid isPermaLink="false"><?=$item['id']?></guid>
+            <?endif?>    
+            <title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+		        <link><?=$item['url']?></link>
+		        <pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+		        <description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
+            <?if (isset($item['category']) and $item['category'] !== ''):?>
+              <category><?=$item['category']?></category>
+            <?endif?>
+   		      <?if ($item['author']):?>
+   			      <author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+   		      <?endif?>
+            <?if ($item['img']):?>
+   			      <enclosure url="<?=$item['img']?>" type="image/jpeg"/>
+   		       <?endif?>
+		      <rambler:fulltext><?=_CDATA_modifier($filter->source($item['text'])->html2text()->entity('xml'))?></rambler:fulltext>
+	      </item>
+	     <?endforeach?>
+    <?endif?>   
+	</channel>
+</rss>

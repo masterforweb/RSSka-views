@@ -1,0 +1,28 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>	
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?><rss version="2.0" xmlns="http://backend.userland.com/rss2" xmlns:yandex="http://news.yandex.ru">
+ <channel>
+	<title><?=$this->c['ch_items']['title']?></title> 
+	<author><?=$this->c['ch_items']['author']?></author>
+	<yandex:logo>http://argumenti.ru/pub/images/argumenti/an_monochrome.jpg</yandex:logo>
+	<yandex:logo type="square">http://argumenti.ru/pub/images/argumenti/an_180_180.png</yandex:logo> 
+	  <description><?=$this->c['ch_items']['description']?></description>
+  <?foreach ($this->c['items'] as $item):?>
+	<item turbo="true">
+		<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title> 
+		<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description> 
+		<link><?=$item['link']?></link> 
+		<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate> 
+		<category><?=$item['category']?></category> 
+		<?if ($item['author']):?>
+			<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+		<?endif?>
+		<?if ($item['image_url']):?>
+			<enclosure url="<?=$item['image_url']?>" type="image/jpeg"/>
+		<?endif?>	
+		<yandex:full-text><?=$filter->source($item['fulltext'])->html2text()->entity('xml')?></yandex:full-text> 
+		<yandex:analytics id="26004090" type="Yandex"></yandex:analytics>
+	</item>
+	<?endforeach?>
+</channel>
+</rss>	

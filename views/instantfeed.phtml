@@ -1,0 +1,73 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>	
+<?$filter = new filter()?>
+	<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+		<channel>
+			<?if (isset($main)) :?>
+				<?if (isset($main['title'])):?>
+					<title><?=$main['title']?></title>
+				<?endif?>
+				<?if (isset($main['link'])):?>
+					<link><?=$main['link']?></link>
+				<?endif?>
+				<?if (isset($main['description'])):?>
+					<description><?=$main['description']?></description>
+				<?endif?>
+				<?if (isset($main['language'])):?>
+					<language><?=$main['language']?>s</language>
+				<?endif?> 
+				<?if (isset($main['author'])):?>
+					<author><?=$this->c['ch_items']['author']?></author>
+				<?endif?>					
+			<?endif?>
+			<?if (isset($items)):?>
+				<?foreach ($items as $item):?>
+					<item>
+						<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+						<link><?=$item['url']?></link>
+						<guid><?=md5($item['url'])?></guid>
+						<pubDate><?=date_ISO_8601($item['pubDate'])?></pubDate>
+						<?if (isset($item['author']) and $item['author'] !== ''):?>
+							<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+						<?endif?>
+						<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
+						<content:encoded>
+							<![CDATA[
+        						<!doctype html>
+       							 <html lang="<?=$main['language']?>" prefix="op: http://media.facebook.com/op#">
+       							 	<head>
+            							<meta charset="utf-8">
+            							<link rel="canonical" href="http://example.com/article.html">
+            							<meta property="op:markup_version" content="v1.0">
+          							</head>
+          							<body>
+            							<article>
+              								<header>
+                								<h1><?=$filter->source($item['title'])->html2text()->entity('xml')?></h1>
+                								<?if (is_array($item['image'])):?>
+													<figure>
+														<img src="<?=$item['image']['url']?>"/>
+														<?if (isset($item['image']['alt'])):?>
+															<figcaption>
+																<?=$filter->source($item['image']['alt'])->html2text()->entity('xml')?>
+															</figcaption>
+														<?endif?>		
+													</figure>		
+												<?endif?>
+												 <time class="op-published" dateTime="<?=date_ISO_8601($item['pubDate'])?>"></time>
+												 <time class="op-modified" dateTime="<?=date_ISO_8601($item['pubDate'])?>"></time>	
+              								</header>
+              								<?=htmllite($item['text'])?>
+              								<footer>
+              									<aside><?=$main['description']?></aside>
+                								<small><?=$main['title']?></small>
+              								</footer>
+           								</article>
+          							</body>
+        						</html>
+						 	]]>
+						</content:encoded>
+					</item>	
+				<?endforeach?>	
+			<?endif?>
+		</channel>
+	</rss>	

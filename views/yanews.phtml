@@ -1,0 +1,81 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>	
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?><?echo "\n"?>
+	<rss xmlns:yandex="http://news.yandex.ru" xmlns:media="http://search.yahoo.com/mrss/" xmlns:turbo="http://turbo.yandex.ru" version="2.0">
+		<channel>
+			<?if (isset($main)) :?>
+				<title><?=$main['title']?></title> 
+				<?if (isset($main['author'])):?>
+					<author><?=$main['author']?></author>
+				<?endif?>	
+				<?if (isset($main['logo'])):?>
+					<yandex:logo><?=$main['logo']?></yandex:logo>
+				<?endif?>
+				<?if (isset($main['logo_square'])):?>	
+					<yandex:logo type="square"><?=$main['logo_square']?></yandex:logo>
+				<?endif?>
+				<?if (isset($main['adNetwork']) and $main['adNetwork'] !== ''):?>
+					<yandex:adNetwork type="Yandex" id="<?=$main['adNetwork']?>"></yandex:adNetwork>
+				<?endif?>
+				<?if (isset($main['analytics']['yandex']) and $main['analytics']['yandex'] !== ''):?>
+					<yandex:analytics id="<?=$main['analytics']['yandex']?>" type="Yandex"></yandex:analytics>
+				<?endif?>	 
+				<?if (isset($main['analytics']['mailru']) and $main['analytics']['mailru'] !== ''):?>
+					<yandex:analytics id="<?=$main['analytics']['mailru']?>" type="MailRu"></yandex:analytics>
+				<?endif?>
+				<?if (isset($main['analytics']['google']) and $main['analytics']['google'] !== ''):?>
+					<yandex:analytics id="<?=$main['analytics']['google']?>" type="Google"></yandex:analytics>
+				<?endif?>
+				<?if (isset($main['analytics']['liveinternet']) and $main['analytics']['liveinternet'] !== ''):?>
+					<yandex:analytics type="LiveInternet">
+					</yandex:analytics>	
+				<?endif?>	
+				<?if (isset($main['description'])):?>
+					<description><?=$main['description']?></description>
+				<?endif?>	
+			<?endif?>
+
+			<?if (isset($items)):?>
+				<?foreach ($items as $item):?>
+					<item turbo="true">
+						<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+						<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
+						<link><?=$item['url']?></link>
+						<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate> 
+						<?if (isset($item['category']) and $item['category'] !== ''):?>
+							<category><?=$item['category']?></category>
+						<?endif?>	
+						<?if (isset($item['author']) and $item['author'] !== ''):?>
+							<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+						<?endif?>
+						<?if (isset($item['image'])):?>
+							<enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
+						<?endif?>	
+						<yandex:full-text><?=$filter->source($item['text'])->html2text()->entity('xml')?></yandex:full-text>
+						<turbo:content><![CDATA[
+    						<header>
+    						<?if (isset($item['image'])):?>
+								<figure>
+									<img src="<?=$item['image']['url']?>"/>
+								</figure>		
+							<?endif?>	
+        					<h1><?=$filter->source($item['title'])->html2text()->entity('xml')?></h1>		
+    					</header>
+    					<?=htmllite($item['text'])?>
+    				]]></turbo:content>
+    				<?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
+						<yandex:related>
+						<?foreach ($item['related'] as $related):?>
+							<link 
+   								url="<?=$related['url']?>" 
+   								img="<?=$related['image']?>"><?=$filter->source($related['title'])->html2text()->entity('xml')?>
+ 							</link>
+						<?endforeach?>	
+						</yandex:related>
+					<?endif?>		  
+					</item>	
+				<?endforeach?>	
+			<?endif?>
+
+		</channel>
+	</rss>	

@@ -1,0 +1,55 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>	
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8"?>'?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:georss="http://www.georss.org/georss">
+ <channel>
+ 	<?if (isset($main)) :?>
+		<title><?=$main['title']?></title> 
+		<link><?=$main['link']?></link>
+		<description><?=$main['description']?></description>
+		<language>ru</language>
+	<?endif?>
+	<?if (isset($items)):?>		
+  		<?foreach ($items as $item):?>
+			<item>
+				<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title> 
+				<description><?=_CDATA_modifier($filter->source($item['description'])->html2text()->entity('xml'))?></description> 
+				<link><?=$item['url']?></link> 
+				<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate> 
+				<?if (isset($item['category']) and $item['category'] !== ''):?>
+					<category><?=$item['category']?></category>
+				<?endif?> 
+				<?if ($item['author']):?>
+					<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+				<?endif?>
+				<?if (isset($item['image'])):?>
+					<enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
+				<?endif?>	
+				<content:encoded><![CDATA[
+    				<h1><?=$filter->source($item['title'])->html2text()->entity('xml')?></h1>
+    				<?if (isset($item['image'])):?>
+						<figure>
+							<img src="<?=$item['image']['url']?>"/>
+							<?if (isset($item['image']['alt'])):?>
+								<figcaption>
+									<?=$filter->source($item['image']['alt'])->html2text()->entity('xml')?>
+								</figcaption>
+							<?endif?>		
+						</figure>		
+					<?endif?>	
+    				<?=htmllite($item['text'])?>
+    				]]></content:encoded> 
+				<?if ($item['rating'] == '18+'):?>
+					<media:rating scheme="urn:simple">adult</media:rating>
+				<?else:?>
+					<media:rating scheme="urn:simple">nonadult</media:rating>	
+				<?endif?>
+			</item>
+		<?endforeach?>
+	<?endif?>	
+</channel>
+</rss>	

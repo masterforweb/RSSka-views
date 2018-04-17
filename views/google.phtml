@@ -1,0 +1,38 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?>
+	<rss version="2.0">
+		<channel>
+	        <title>Аргументы Недели</title>
+	        <link>http://www.argumenti.ru/an</link>
+	        <description>Содержание выпуска №<?=$this->c['ch_items']['numberYear']?>(<?=$this->c['ch_items']['numberAll']?>) издания "Аргументы Недели"(от <?=$this->c['ch_items']['numberDate']?>)</description>
+	        <language>ru</language>
+	        <pubDate><?=_U2RFC822_modifier($this->c['items'][0]['pubDate'])?></pubDate>
+	        <lastBuildDate><?=_U2RFC822_modifier($this->c['items'][0]['pubDate'])?></lastBuildDate>
+	        <image>
+	            <url><?=$this->c['ch_items']['image']['url']?></url> 
+				<title><?=$this->c['ch_items']['image']['title']?></title> 
+				<link><?=$this->c['ch_items']['image']['link']?></link> 
+	        </image>
+			<?foreach ($this->c['items'] as $item):?>
+				<item>
+					<category><?=$item['category']?></category>
+					<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+					<link><?=$item['link']?></link>
+					<guid><?=$item['link']?></guid>
+					<?if (isset($item['image_url'])):?>
+						<image> 
+							<url><?=$item['image_url']?></url>
+							<title><?=$filter->source($item['image_title'])->entity('xml')?></title>
+							<link><?=$item['link']?></link>
+						</image>
+					<?endif?>	
+					<author>
+						<name><?=$filter->source($item['author'])->entity('xml')?></name>
+					</author>
+					<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+					<description><?=$filter->source($item['fulltext'])->html2text()->entity('xml')?></description>
+				</item>
+			<?endforeach?>	
+		</channel>
+	</rss>

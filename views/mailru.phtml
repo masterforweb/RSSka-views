@@ -1,0 +1,27 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?require_once HELPPATH.'date_W3C.php'?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?>
+<?$filter = new filter()?>
+<rss version="2.0" xmlns:mailru="http://news.mail.ru/">
+  <channel>
+    <title><?=$this->items['ch']['title']?></title>
+    <link>http://www.argumenti.ru/</link>
+    <description><?=$this->items['ch']['description']?></description>
+    <language>ru</language>
+    <pubDate><?=_U2RFC822_modifier($this->c['items'][0]['pubDate'])?></pubDate>
+    <lastBuildDate><?=_U2RFC822_modifier($this->c['items'][0]['pubDate'])?></lastBuildDate>
+    <managingEditor>anonline@argumenti.ru</managingEditor>
+    <webMaster>web@argumenti.ru</webMaster>
+    <?foreach ($this->c['items'] as $item):?>
+		<item>
+			<guid><?=$item['link']?></guid>
+			<category><?=$item['category']?></category>
+			<title><![CDATA[<?=$filter->source($item['title'])->html2text()?>]]></title>
+			<description><![CDATA[<?=$filter->source($item['description'])->html2text()?>]]></description>
+			<mailru:full-text><![CDATA[<?=$filter->source($item['fulltext'])->html2text()->text2p()?>]]></mailru:full-text>
+			<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+			<link><?=$item['link']?></link>
+		</item>
+	<?endforeach?>	
+</channel>
+</rss>

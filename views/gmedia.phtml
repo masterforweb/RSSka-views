@@ -1,0 +1,31 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?>
+	<rss xmlns:str="http://exslt.org/strings" version="2.0">
+		<channel>
+	        <title>Аргументы Недели</title>
+	        <link>http://www.argumenti.ru/an</link>
+	        <description>Последний выпуск еженедельника "Аргументы Недели"</description>
+	        <language>ru</language>
+	        <pubDate><?=_U2RFC822_modifier($this->c['items'][0]['pubDate'])?></pubDate>
+	        <image>
+	            <url><?=$this->c['ch_items']['image']['url']?></url> 
+				<title><?=$this->c['ch_items']['image']['title']?></title> 
+				<link><?=$this->c['ch_items']['image']['link']?></link> 
+	        </image>
+			<?foreach ($this->c['items'] as $item):?>
+				<item>
+					<category><?=$item['category']?></category>
+					<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+					<link><?=$item['link']?></link>
+					<guid><?=$item['link']?></guid>
+					<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+					<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+					<description><?=$filter->source($item['fulltext'])->entity('xml')?></description>
+					<?if (isset($item['image_url'])):?>
+						<enclosure url="<?=$item['image_url']?>" type="image/jpeg" length="1" />
+					<?endif?>
+             	</item>
+			<?endforeach?>	
+		</channel>
+	</rss>

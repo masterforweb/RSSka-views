@@ -1,0 +1,40 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>	
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?><?echo "\n"?>
+	<rss version="2.0">
+		<channel>
+			<?if (isset($main)) :?>
+				<title><?=$main['title']?></title> 
+				<?if (isset($main['logo'])):?>
+					<image>
+						<url><?=$main['logo']?></url>
+						<title><?=$main['title']?></title>
+						<link><?=$main['link']?></link>
+					</image>
+				<?endif?>
+				<pubDate><?=_U2RFC822_modifier($items[0]['pubDate'])?></pubDate>
+    			<lastBuildDate><?=_U2RFC822_modifier($items[0]['pubDate'])?></lastBuildDate>		
+			<?endif?>
+
+			<?if (isset($items)):?>
+				<?foreach ($items as $item):?>
+					<item>
+						<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title>
+						<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
+						<link><?=$item['url']?></link>
+						<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate> 
+						<?if (isset($item['category']) and $item['category'] !== ''):?>
+							<category><?=$item['category']?></category>
+						<?endif?>	
+						<?if (isset($item['author']) and $item['author'] !== ''):?>
+							<author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
+						<?endif?>
+						<?if (isset($item['image'])):?>
+							<enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
+						<?endif?>			  
+					</item>	
+				<?endforeach?>	
+			<?endif?>
+
+		</channel>
+	</rss>	

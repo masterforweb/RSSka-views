@@ -1,0 +1,19 @@
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?> 
+<rss version="2.0" xmlns="http://backend.userland.com/rss2">
+ <channel>
+	<title><?=$this->c['ch_items']['title']?></title> 
+	<description><?=$this->c['ch_items']['description']?></description>
+  <?foreach ($this->c['items'] as $item):?>
+	<item>
+		<title><?=$filter->source($item['title'])->html2text()->entity('xml')?></title> 
+		<link><?=$item['link']?></link> 
+		<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+		<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description> 
+		<category><?=$item['category']?></category>
+		<full-text><?=_CDATA_modifier($filter->source($item['fulltext'])->html2text()->entity('xml'))?></full-text> 
+	</item>
+	<?endforeach?>
+	</channel>
+</rss>
