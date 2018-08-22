@@ -30,7 +30,12 @@
    			      <enclosure url="<?=$item['img']?>" type="image/jpeg"/>
    		       <?endif?>
 		      <rambler:fulltext><?=_CDATA_modifier($filter->source($item['text'])->html2text()->entity('xml'))?></rambler:fulltext>
-	      </item>
+               <?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
+                       <?foreach ($item['related'] as $related):?>
+                           <rambler:related url="<?=$related['url']?>" title="<?=$filter->source($related['title'])->html2text()->entity('xml')?>" rel="news" type="text/html" pubdate="<?=_U2RFC822_modifier($related['pubDate'])?>" />
+                       <?endforeach?>
+               <?endif?>
+           </item>
 	     <?endforeach?>
     <?endif?>   
 	</channel>
