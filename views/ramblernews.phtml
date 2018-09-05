@@ -26,8 +26,8 @@
    		      <?if ($item['author']):?>
    			      <author><?=$filter->source($item['author'])->html2text()->entity('xml')?></author>
    		      <?endif?>
-            <?if ($item['img']):?>
-   			      <enclosure url="<?=$item['img']?>" type="image/jpeg"/>
+            <?if ($item['image']):?>
+   			      <enclosure url="<?=$item['image']?>" type="image/jpeg"/>
    		       <?endif?>
 		      <rambler:fulltext><?=_CDATA_modifier($filter->source($item['text'])->html2text()->entity('xml'))?></rambler:fulltext>
                <?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
