@@ -52,18 +52,7 @@
 							<enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
 						<?endif?>	
 						<yandex:full-text><?=$filter->source($item['text'])->html2text()->entity('xml')?></yandex:full-text>
-						<turbo:content><![CDATA[
-    						<header>
-    						<?if (isset($item['image'])):?>
-								<figure>
-									<img src="<?=$item['image']['url']?>"/>
-								</figure>		
-							<?endif?>	
-        					<h1><?=$filter->source($item['title'])->html2text()->entity('xml')?></h1>		
-    					</header>
-    					<?=htmllite($item['text'])?>
-    				]]></turbo:content>
-    				<?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
+    				    <?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
 						<yandex:related>
 						<?foreach ($item['related'] as $related):?>
 							<link 
