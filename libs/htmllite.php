@@ -3,7 +3,7 @@
 function htmllite($html) {
 
 	//чистим стили
-	$html = strip_tags($html, '<p><b><i><ul><ol><li><h1><h2><h3><a><div>');
+	$html = strip_tags($html, '<p><b><i><ul><ol><li><h1><h2><h3><a><div><br>');
 	$tags = array('<p><b><i><ul><ol><li><h1><h2><h3><a><div><a><img>');
 	
 	$attr = array('href', 'src');
