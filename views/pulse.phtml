@@ -1,9 +1,6 @@
-<?header("Content-Type: text/xml; charset=UTF8");
-$filter = new filter();
-echo '<xml version="1.0" encoding="UTF-8">';?>
-<rss version="2.0"
-     xmlns:content="http://purl.org/rss/1.0/modules/content/"
->
+<?header("Content-Type: text/xml; charset=UTF8")?>
+<?$filter = new filter()?>
+<?='<?xml version="1.0" encoding="UTF-8" ?>'?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 		<channel>
 			<?if (isset($main)) :?>
 				<title><?=$main['title']?></title>
@@ -30,6 +27,5 @@ echo '<xml version="1.0" encoding="UTF-8">';?>
 					</item>	
 				<?endforeach?>	
 			<?endif?>
-
-		</channel>
+        </channel>
 	</rss>	
