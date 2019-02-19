@@ -19,11 +19,8 @@
                         <?if (isset($item['image'])):?>
                             <enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
                         <?endif?>
-						<description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
-						<pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
-                        <?if (isset($item['image'])):?>
-                            <enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
-                        <?endif?>
+                        <pubDate><?=_U2RFC822_modifier($item['pubDate'])?></pubDate>
+                        <description><?=$filter->source($item['description'])->html2text()->entity('xml')?></description>
 					</item>	
 				<?endforeach?>	
 			<?endif?>
