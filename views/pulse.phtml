@@ -6,10 +6,7 @@
 		<channel>
 			<?if (isset($main)) :?>
 				<title><?=$main['title']?></title>
-                <link>http://example.com/</link>
-                <?if (isset($main['logo'])):?>
-					<yandex:logo><?=$main['logo']?></yandex:logo>
-				<?endif?>
+                <link><?=$main['link']?></link>
                 <language>ru</language>
 				<?if (isset($main['description'])):?>
 					<description><?=$main['description']?></description>
