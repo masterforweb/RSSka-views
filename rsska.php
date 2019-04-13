@@ -25,7 +25,8 @@
 
 function rsska_kuri($template, $source = null){
 
-    $result = rsska_generation_kuri($template, $source = null);
+
+    $result = rsska_generation_kuri($template, $source);
     echo $result;
     exit;
 
@@ -63,7 +64,7 @@ function rsska_generation_kuri($template, $source = null){
         require $currdir.'libs/date_W3C.php';
         require $currdir.'libs/date_ISO_8601.php';
 
-        $fview = $currdir.'views/'.$view.'.phtml';
+        $fview = $currdir.'views/'.$template.'.phtml';
 
 
         if (file_exists($fview)) {
