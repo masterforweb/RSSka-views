@@ -5,7 +5,10 @@
 
     "require":{
         "php": ">=5.2.0"
-        
+    },
+
+    "autoload": {
+        "files": ["rsska.php"]
     }
 
 }
