@@ -1,18 +1,39 @@
 <?php
 
+/**
+ * RSSka: rss generated content: yandex news, yandex zen
+ *
+ * @copyright Copyright (c) 2010-19 Andrey Delfin (@masterforweb)
+ *
+ * A copy of the Apache License, Version 2.0, is provided with this distribution
+ *
+ */
 
 
-function rsska_kuri($template, $data = null){
+/**
+
+ *
+ * A copy of the Apache License, Version 2.0, is provided with this
+ * distribution
+ *
+ * @param tempale (yandex, zen)
+ *
+ * @param source (array)
+ * @return array
+ *
+ */
+
+function rsska_kuri($template, $source = null){
 
 
     $currdir =  dirname( __FILE__ );
 
 
-    if ($data == null) {
+    if ($source == null) {
         if (isset($_POST['data']))
-            $data = json_decode($_POST['data']);
+            $source = json_decode($_POST['data']);
         else {
-            return 'no data';
+            return array('data' => 'no data');
         }
     }
 
@@ -24,7 +45,7 @@ function rsska_kuri($template, $data = null){
         $currdir = RSSKA;
     }
 
-    // add filters
+
 
     require $currdir.'libs/filter.php';
     require $currdir.'libs/utf8_ents.php';
