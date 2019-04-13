@@ -19,49 +19,56 @@
  * @param tempale (yandex, zen)
  *
  * @param source (array)
- * @return array
+ * @return echo
  *
  */
 
 function rsska_kuri($template, $source = null){
 
+    $result = rsska_generation_kuri($template, $source = null);
+    echo $result;
+    exit;
 
-    $currdir =  dirname( __FILE__ );
+}
 
 
-    if ($source == null) {
-        if (isset($_POST['data']))
-            $source = json_decode($_POST['data']);
-        else {
-            return array('data' => 'no data');
+function rsska_generation_kuri($template, $source = null){
+
+
+        $currdir =  dirname( __FILE__ );
+
+
+        if ($source == null) {
+            if (isset($_POST['data']))
+                $source = json_decode($_POST['data']);
+            else {
+                return 'no data';
+            }
         }
-    }
 
 
-    if (!defined(RSSKA)) {
-        $currdir = dirname(__FILE__).'/';
-    }
-    else {
-        $currdir = RSSKA;
-    }
+        if (!defined(RSSKA)) {
+            $currdir = dirname(__FILE__).'/';
+        }
+        else {
+            $currdir = RSSKA;
+        }
 
 
+        require $currdir.'libs/filter.php';
+        require $currdir.'libs/utf8_ents.php';
+        require $currdir.'libs/U2RFC822_modifier.php';
+        require $currdir.'libs/CDATA_modifier.php';
+        require $currdir.'libs/htmllite.php';
+        require $currdir.'libs/date_W3C.php';
+        require $currdir.'libs/date_ISO_8601.php';
 
-    require $currdir.'libs/filter.php';
-    require $currdir.'libs/utf8_ents.php';
-    require $currdir.'libs/U2RFC822_modifier.php';
-    require $currdir.'libs/CDATA_modifier.php';
-    require $currdir.'libs/htmllite.php';
-    require $currdir.'libs/date_W3C.php';
-    require $currdir.'libs/date_ISO_8601.php';
-
-    $fview = $currdir.'views/'.$view.'.phtml';
+        $fview = $currdir.'views/'.$view.'.phtml';
 
 
-    if (file_exists($fview)) {
-        $result = view($fview, array('main' => $main, 'items' => $items));
-        return $result;
-    }
-
+        if (file_exists($fview)) {
+            $result = view($fview, array('main' => $main, 'items' => $items));
+            return  $result;
+        }
 
 }
