@@ -67,7 +67,7 @@ function rsska_generation_kuri($template, $source = null){
 
 
         if (file_exists($fview)) {
-            $result = view($fview, array('main' => $main, 'items' => $items));
+            $result = view($fview, $source);
             return  $result;
         }
 
