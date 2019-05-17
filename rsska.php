@@ -63,6 +63,7 @@ function rsska_generation_kuri($template, $source = null){
         require $currdir.'libs/htmllite.php';
         require $currdir.'libs/date_W3C.php';
         require $currdir.'libs/date_ISO_8601.php';
+        require $currdir.'libs/textlite.php';
 
         $fview = $currdir.'views/'.$template.'.phtml';
 

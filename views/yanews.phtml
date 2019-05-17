@@ -51,7 +51,7 @@
 						<?if (isset($item['image'])):?>
 							<enclosure url="<?=$item['image']['url']?>" type="image/jpeg"/>
 						<?endif?>	
-						<yandex:full-text><?=$filter->source($item['text'])->html2text()->entity('xml')?></yandex:full-text>
+						<yandex:full-text><?=textlite($item['text'])?></yandex:full-text>
     				    <?if (is_array($item['related']) and sizeof($item['related']) > 0):?>
 						<yandex:related>
 						<?foreach ($item['related'] as $related):?>
