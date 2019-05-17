@@ -3,7 +3,7 @@
 function textlite($text){
 
     $text = str_replace('</p>', '<br>', $text);
-    $text = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
+    $text = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
     $text = strip_tags($text);
 
     $text = xmlentities($text);
@@ -21,7 +21,7 @@ function xmlentities($s) {
         $tbl = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
         foreach ($tbl as $k => $v) {
             $patterns[] = "/$v/";
-            $reps[] = '&#' . ord($k) . ';'
+            $reps[] = '&#' . ord($k) . ';';
         }
     }
     return preg_replace($patterns, $reps, htmlentities($s, ENT_QUOTES, 'UTF-8'));
